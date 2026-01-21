@@ -10,14 +10,24 @@ struct Record {
 
     // Проверка, что строка состоит только из русских букв, пробелов или дефисов
     static bool isCyrillic(const std::string& s) {
+       if (s.empty()) return false;
+
         for (unsigned char c : s) {
-            // диапазон кириллицы в UTF-8
-            if ((c >= 192 && c <= 255) || c == '-' || c == ' ')
+        // запрещаем цифры
+            if (std::isdigit(c))
+                return false;
+
+        // запрещаем латиницу
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                return false;
+
+        // разрешаем пробел и дефис
+            if (c == ' ' || c == '-')
                 continue;
-            return false;
         }
-        return !s.empty();
+        return true;
     }
+
 
     // Проверка телефона
     static bool isPhoneValid(const std::string& s) {
